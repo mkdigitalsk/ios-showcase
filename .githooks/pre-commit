@@ -1,0 +1,9 @@
+#!/bin/sh
+# Refuses a commit the pinned SwiftFormat would rewrite.
+set -eu
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+cd "$(git rev-parse --show-toplevel)"
+make format-check || {
+  echo "pre-commit: run make format, stage the result, commit again" >&2
+  exit 1
+}

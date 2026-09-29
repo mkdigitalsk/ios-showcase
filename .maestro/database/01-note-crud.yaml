@@ -1,0 +1,53 @@
+appId: sk.mkdigital.templateios.debug
+name: Database — a note appears in the list and leaves it again
+tags:
+  - needs-api
+---
+# The local database through the UI. Signing in reaches the API, hence the tag —
+# e2e.exclude-tags=needs-api runs the rest of the suite without a server.
+#
+# 1. Start the app from a clear state and sign in.
+# 2. Tap Database.
+# 3. Expect: the empty list — "No notes yet. Add your first note above!".
+# 4. Type "Maestro note" into Title and "written by the flow" into Content, then dismiss the keyboard.
+# 5. Tap Add Note.
+# 6. Expect: the note is in the list — "Delete All Notes" renders and the empty state is gone.
+# 7. Tap the note's Delete button.
+# 8. Expect: the empty state is back.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Database"
+- extendedWaitUntil:
+    visible: "SwiftData database with CRUD operations, search, and sorting"
+    timeout: 20000
+- assertVisible: "No notes yet. Add your first note above!"
+
+- tapOn: "Enter note title…"
+- inputText: "Maestro note"
+- tapOn: "Enter note content…"
+- inputText: "written by the flow"
+# ⚠ The keyboard covers the list, and an occluded node is not a visible one — its Done closes it.
+- waitForAnimationToEnd
+- tapOn: "Done"
+
+- tapOn: "Add Note"
+- extendedWaitUntil:
+    visible: "Maestro note"
+    timeout: 20000
+# ⚠ "Maestro note" alone would still be on screen inside the title field if the insert had failed —
+# the assertion has to name what only a stored row draws.
+- assertVisible: "Delete All Notes"
+- assertNotVisible: "No notes yet. Add your first note above!"
+
+# ⚠ ^Delete$ — the row's trash button carries that label, and "Delete All Notes" contains it.
+- tapOn:
+    text: "^Delete$"
+- extendedWaitUntil:
+    visible: "No notes yet. Add your first note above!"
+    timeout: 20000

@@ -1,0 +1,13 @@
+appId: sk.mkdigital.templateios.debug
+name: Answer the system's "Open in" confirmation for a link
+---
+# Reused through runFlow right after openLink — iOS asks before it hands a custom-scheme link to the app,
+# and an unanswered dialog stays over every later step, and over the next flow's launch too.
+
+- extendedWaitUntil:
+    visible: "Open in .*"
+    timeout: 5000
+    optional: true
+- tapOn:
+    text: "^Open$"
+    optional: true

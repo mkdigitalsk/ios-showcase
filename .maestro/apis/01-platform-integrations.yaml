@@ -1,0 +1,77 @@
+appId: sk.mkdigital.templateios.debug
+name: APIs — clipboard, share sheet, missing apps and location each answer
+tags:
+  - needs-api
+---
+# ⚠ Written for the simulator: it has no Phone and no Mail, so both report no app. On a device they open.
+#
+# 1. Put the simulator at a known position, start from a clear state, sign in, open APIs.
+# 2. Tap Copy Text. Expect: "Copied to clipboard".
+# 3. Tap Share Text. Expect: the share sheet headed by the sentence, with its Copy action. Dismiss it.
+# 4. Tap Open Dialer. Expect: "No app on this device can open this".
+# 5. Tap Get Location. Expect: the position set in step 1.
+# 6. Tap Start Tracking. Expect: Stop Tracking and a position. Tap Stop Tracking.
+
+- setLocation:
+    latitude: 48.148598
+    longitude: 17.107748
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "APIs"
+- extendedWaitUntil:
+    visible: "Share Text"
+    timeout: 20000
+
+# ⚠ Centered, because the floating tab bar covers the bottom of the screen and a tap there lands on the
+# selected tab, which pops back to Home.
+- scrollUntilVisible:
+    element: "Copy Text"
+    centerElement: true
+- tapOn: "Copy Text"
+- assertVisible: "Copied to clipboard"
+
+- scrollUntilVisible:
+    element: "Share Text"
+    centerElement: true
+    direction: UP
+- tapOn: "Share Text"
+- extendedWaitUntil:
+    visible: "^Copy$"
+    timeout: 15000
+# The sheet's header is the shared text itself — the sentence, then the link.
+- assertVisible: "iOS, Android, web and backend.*mkdigital.*"
+- tapOn:
+    point: "50%,12%"
+- extendedWaitUntil:
+    notVisible: "^Copy$"
+    timeout: 10000
+
+- tapOn: "Open Dialer"
+- extendedWaitUntil:
+    visible: "No app on this device can open this"
+    timeout: 10000
+
+- scrollUntilVisible:
+    element: "Get Location"
+    centerElement: true
+- tapOn: "Get Location"
+- extendedWaitUntil:
+    visible: "Lat: 48.14.*, Lon: 17.10.*"
+    timeout: 30000
+
+- scrollUntilVisible:
+    element: "Start Tracking"
+    centerElement: true
+- tapOn: "Start Tracking"
+- extendedWaitUntil:
+    visible: "Stop Tracking"
+    timeout: 10000
+- tapOn: "Stop Tracking"
+- extendedWaitUntil:
+    visible: "Start Tracking"
+    timeout: 10000

@@ -1,0 +1,43 @@
+appId: sk.mkdigital.templateios.debug
+name: Session — a relaunch keeps the session, and signing out ends it for good
+tags:
+  - needs-api
+---
+# 1. Start the app from a clear state and sign in.
+# 2. Stop the app and launch it again without clearing state.
+# 3. Expect: Home, with no sign-in in between — the keychain token restored the session.
+# 4. Open Settings and tap Sign Out.
+# 5. Expect: Welcome Back.
+# 6. Stop the app and launch it again.
+# 7. Expect: Welcome Back — the token went with the session.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Networking"
+    timeout: 30000
+- assertNotVisible: "Welcome Back"
+
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "My Profile"
+    timeout: 20000
+- scrollUntilVisible:
+    element: "Sign Out"
+    centerElement: true
+- tapOn: "Sign Out"
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000

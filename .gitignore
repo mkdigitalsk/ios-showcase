@@ -1,0 +1,21 @@
+.DS_Store
+__pycache__/
+.idea
+.vscode
+local.properties
+local/
+.env
+
+# Xcode — project.yml is the source; XcodeGen generates the project, so none of it is tracked
+*.xcodeproj
+*.xcworkspace
+xcuserdata
+DerivedData/
+.build/
+build/
+
+# Build output — xcodebuild's derived data and SwiftPM's, both under make targets
+.build/
+
+# SwiftPM scratch xcodebuild leaves inside a package when it tests it
+.swiftpm/

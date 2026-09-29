@@ -1,0 +1,68 @@
+appId: sk.mkdigital.templateios.debug
+name: Networking — a note is created, edited and deleted on the server
+tags:
+  - needs-api
+onFlowStart:
+  - evalScript: ${output.title = 'Maestro remote ' + Date.now()}
+onFlowComplete:
+  - runScript:
+      file: ../scripts/delete-notes-on-server.js
+      env:
+        TITLE: ${output.title}
+        EMAIL: ${E2E_EMAIL}
+        PASSWORD: ${E2E_PASSWORD}
+---
+# The title is unique per run, so notes a failed run left behind never match.
+#
+# 1. Start the app from a clear state, sign in and open Networking.
+# 2. Type a unique title and a content, tap Add note.
+# 3. Expect: the note is listed.
+# 4. Tap its Edit note, replace the content, tap Save.
+# 5. Expect: the new content is listed and the edit is closed.
+# 6. Tap its Delete note.
+# 7. Expect: the note is gone.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Networking"
+- extendedWaitUntil:
+    visible: "A remote server demonstration.*"
+    timeout: 20000
+
+- tapOn: "Enter note title…"
+- inputText: ${output.title}
+- tapOn: "Enter note content…"
+- inputText: "first draft"
+# The keyboard's own Done — a multi-line field keeps the keyboard up otherwise.
+- waitForAnimationToEnd
+- tapOn: "Done"
+- tapOn: "Add note"
+- extendedWaitUntil:
+    visible: "first draft"
+    timeout: 30000
+
+- tapOn:
+    text: "Edit note"
+    below: ${output.title}
+- tapOn:
+    id: "networking.edit.content"
+- eraseText
+- inputText: "second draft"
+- waitForAnimationToEnd
+- tapOn: "Done"
+- tapOn: "Save"
+- extendedWaitUntil:
+    visible: "second draft"
+    timeout: 30000
+- assertNotVisible: "Save"
+
+- tapOn:
+    text: "Delete note"
+    below: ${output.title}
+- extendedWaitUntil:
+    notVisible: ${output.title}
+    timeout: 30000

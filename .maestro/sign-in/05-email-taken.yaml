@@ -1,0 +1,43 @@
+appId: sk.mkdigital.templateios.debug
+name: Sign up — an email that already has an account lands on the email field
+tags:
+  - needs-api
+---
+# Uses the test account's own email, so no account is ever created.
+#
+# 1. Start the app from a clear state and open Create Account.
+# 2. Type the test account's email with a strong password, twice.
+# 3. Tap Sign Up.
+# 4. Expect: "This email already has an account".
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+- tapOn: "Sign Up"
+- extendedWaitUntil:
+    visible: "Create Account"
+    timeout: 10000
+
+- tapOn: "Enter your email"
+- inputText: "test01@mkdigital.sk"
+# ⚠ iOS may cover a secure new-password field with its "Use Strong Password?" sheet, drawn outside the
+# app's tree, and the keys typed under it are lost. The eye swaps in a plain field, which gets no sheet.
+- tapOn:
+    text: "Show password"
+    index: 0
+- tapOn: "Enter your password"
+- inputText: "Strong1@pass"
+- tapOn: "Show password"
+- tapOn: "Confirm your password"
+- inputText: "Strong1@pass"
+- tapOn:
+    id: "signUp.submit"
+
+- extendedWaitUntil:
+    visible: "This email already has an account"
+    timeout: 30000

@@ -1,0 +1,38 @@
+appId: sk.mkdigital.templateios.debug
+name: Sign in — the form rejects what it can judge itself
+---
+# No server, no account, no network — the form answers on its own.
+#
+# 1. Start the app from a clear state, on Welcome Back.
+# 2. Tap Sign In with both fields empty.
+# 3. Expect: "Email is required" and "Password is required".
+# 4. Type "not-an-email" into Email and "short" into Password, then dismiss the keyboard.
+# 5. Tap Sign In.
+# 6. Expect: "Invalid email format" and "Password must be at least 8 characters".
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+
+# The submit button and the screen title read the same, so the button is tapped by its identifier.
+- tapOn:
+    id: "signIn.submit"
+- assertVisible: "Email is required"
+- assertVisible: "Password is required"
+
+# An empty field shows its placeholder, which is what the tap names.
+- tapOn: "Enter your email"
+- inputText: "not-an-email"
+- tapOn: "Enter your password"
+- inputText: "short"
+- hideKeyboard
+
+- tapOn:
+    id: "signIn.submit"
+- assertVisible: "Invalid email format"
+- assertVisible: "Password must be at least 8 characters"

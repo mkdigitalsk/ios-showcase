@@ -1,0 +1,23 @@
+appId: sk.mkdigital.templateios.debug
+name: Sign in with the built-in test account
+tags:
+  - needs-api
+---
+# Reused through runFlow — the caller launches the app, this one only signs in.
+#
+# 1. The app is open on Welcome Back.
+# 2. Tap Fill — the test-account card writes the test account into the form.
+# 3. Tap Sign In.
+# 4. Expect: signed in — Home renders.
+
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+
+- tapOn: "Fill"
+- tapOn:
+    id: "signIn.submit"
+
+- extendedWaitUntil:
+    visible: "Home"
+    timeout: 30000

@@ -1,0 +1,37 @@
+appId: sk.mkdigital.templateios.debug
+name: Deep links — a link opens its screen, and the app ones wait for a session
+tags:
+  - needs-api
+---
+# 1. Start from a clear state, signed out. Open templateios://sign-up. Expect: Create Account.
+# 2. Go back to Welcome Back and sign in.
+# 3. Open templateios://settings. Expect: Settings.
+# 4. Open templateios://database. Expect: Database.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+
+- openLink: "templateios://sign-up"
+- runFlow: ../shared/open-link.yaml
+- extendedWaitUntil:
+    visible: "Create Account"
+    timeout: 10000
+- tapOn: "^Sign In$"
+- runFlow: ../shared/sign-in.yaml
+
+- openLink: "templateios://settings"
+- runFlow: ../shared/open-link.yaml
+- extendedWaitUntil:
+    visible: "My Profile"
+    timeout: 10000
+
+- openLink: "templateios://database"
+- runFlow: ../shared/open-link.yaml
+- extendedWaitUntil:
+    visible: "SwiftData database with CRUD operations.*"
+    timeout: 10000

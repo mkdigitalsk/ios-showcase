@@ -1,0 +1,45 @@
+appId: sk.mkdigital.templateios.debug
+name: Settings — the account shows, the theme changes, the photo source opens, the demo account stays
+tags:
+  - needs-api
+---
+# 1. Start from a clear state, sign in, open the Settings tab.
+# 2. Expect: the account's email from the server.
+# 3. Pick Dark as the theme. Expect: Dark shown.
+# 4. Tap Profile Photo. Expect: the image source choice. Dismiss it.
+# 5. Expect: the demo account's delete notice.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Settings"
+# ⚠ A LabeledContent row is one element whose text is "label, value", and matching is on the whole text.
+- extendedWaitUntil:
+    visible: "Email, test01@mkdigital.sk"
+    timeout: 30000
+
+- tapOn: "Theme, System"
+- tapOn: "^Dark$"
+- extendedWaitUntil:
+    visible: "Theme, Dark"
+    timeout: 10000
+
+- tapOn: "Profile Photo"
+- extendedWaitUntil:
+    visible: "Select Image Source"
+    timeout: 10000
+- assertVisible: "Photo Library"
+# iOS 26 presents the choice as a popover with no Cancel; a tap outside it dismisses.
+- tapOn:
+    id: "PopoverDismissRegion"
+- extendedWaitUntil:
+    notVisible: "Select Image Source"
+    timeout: 10000
+
+- scrollUntilVisible:
+    element: "This is a demo account, so it cannot be deleted."
+    centerElement: true
+- assertVisible: "Delete account"

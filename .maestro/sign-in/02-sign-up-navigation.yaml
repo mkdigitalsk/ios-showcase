@@ -1,0 +1,27 @@
+appId: sk.mkdigital.templateios.debug
+name: Sign in — the sign-up screen is one tap away and one tap back
+---
+# 1. Start the app from a clear state, on Welcome Back.
+# 2. Tap Sign Up.
+# 3. Expect: Create Account.
+# 4. Tap Sign In.
+# 5. Expect: Welcome Back.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+
+- tapOn: "Sign Up"
+- extendedWaitUntil:
+    visible: "Create Account"
+    timeout: 10000
+
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 10000

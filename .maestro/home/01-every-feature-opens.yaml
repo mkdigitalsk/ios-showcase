@@ -1,0 +1,77 @@
+appId: sk.mkdigital.templateios.debug
+name: Home — every feature tile opens its screen and comes back
+tags:
+  - needs-api
+---
+# 1. Start the app from a clear state and sign in.
+# 2. For each of the eight tiles: tap it, expect what only that screen draws, tap Back.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+# ⚠ The back button's label is the title it returns to — "Home", the same as the tab — so it is tapped
+# by its id.
+- tapOn: "UI components"
+- extendedWaitUntil:
+    visible: "Primary disabled"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- tapOn: "Networking"
+- extendedWaitUntil:
+    visible: "A remote server demonstration.*"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- tapOn: "Storage"
+- extendedWaitUntil:
+    visible: "In memory"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- tapOn: "APIs"
+- extendedWaitUntil:
+    visible: "Share Text"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- tapOn: "Scanner"
+- extendedWaitUntil:
+    visible: "Generate and scan QR codes.*"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- tapOn: "Database"
+- extendedWaitUntil:
+    visible: "SwiftData database with CRUD operations.*"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- tapOn: "Calendar"
+- extendedWaitUntil:
+    visible: "Select a date range by tapping two dates"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+
+- scrollUntilVisible:
+    element: "Notifications"
+    centerElement: true
+- tapOn: "Notifications"
+- extendedWaitUntil:
+    visible: "Test local and push notifications"
+    timeout: 10000
+- tapOn:
+    id: "BackButton"
+- extendedWaitUntil:
+    visible: "UI components"
+    timeout: 10000

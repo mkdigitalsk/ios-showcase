@@ -1,0 +1,58 @@
+appId: sk.mkdigital.templateios.debug
+name: Database — search narrows the list and sort reorders it
+tags:
+  - needs-api
+---
+# 1. Start from a clear state, sign in, open Database.
+# 2. Add "Alpha apples" and "Beta bread".
+# 3. Search for "apples". Expect: Alpha listed, Beta not.
+# 4. Close the search, sort by Title (Z-A). Expect: Alpha below Beta.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Database"
+- extendedWaitUntil:
+    visible: "SwiftData database with CRUD operations.*"
+    timeout: 20000
+
+- tapOn: "Enter note title…"
+- inputText: "Alpha apples"
+- waitForAnimationToEnd
+- tapOn: "Done"
+- tapOn: "Add Note"
+- extendedWaitUntil:
+    visible: "Delete All Notes"
+    timeout: 10000
+- tapOn: "Enter note title…"
+- inputText: "Beta bread"
+- waitForAnimationToEnd
+- tapOn: "Done"
+- tapOn: "Add Note"
+- extendedWaitUntil:
+    visible: "Beta bread"
+    timeout: 10000
+
+- tapOn: "Search notes…"
+- inputText: "apples"
+- extendedWaitUntil:
+    notVisible: "Beta bread"
+    timeout: 10000
+- assertVisible: "Alpha apples"
+
+# iOS 26 draws the search bar's dismiss as a glyph labelled Close, not a Cancel button.
+- tapOn: "Close"
+- extendedWaitUntil:
+    visible: "Beta bread"
+    timeout: 10000
+
+- tapOn: "Sort by"
+- tapOn: "Title \\(Z-A\\)"
+- extendedWaitUntil:
+    visible:
+      text: "Alpha apples"
+      below: "Beta bread"
+    timeout: 10000

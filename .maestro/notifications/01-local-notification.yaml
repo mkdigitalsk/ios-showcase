@@ -1,0 +1,53 @@
+appId: sk.mkdigital.templateios.debug
+name: Notifications — a reminder is sent, arrives in front, and Cancel All clears it
+tags:
+  - needs-api
+---
+# The reminder fires a second after the tap, while the app is in front, so the delivery path the app
+# delegate owns is what puts "Last received" on screen.
+#
+# 1. Start from a clear state, sign in, open Notifications.
+# 2. Where the permission is not determined, tap Request Permission and Allow. Expect: "Status: Granted".
+# 3. Tap Reminder. Expect: "Last sent: Reminder", then "Last received" with the reminder's text.
+# 4. Tap Cancel All. Expect: no "Last sent".
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- scrollUntilVisible:
+    element: "Notifications"
+    centerElement: true
+- tapOn: "Notifications"
+- extendedWaitUntil:
+    visible: "Test local and push notifications"
+    timeout: 20000
+
+# launchApp's permissions do not grant notifications on an iOS 26 simulator, so the app asks — the request
+# path is under test too. Maestro answers the system prompt itself, so the Allow tap is only a fallback.
+- runFlow:
+    when:
+      visible: "Status: Not determined"
+    commands:
+      - tapOn: "Request Permission"
+      - tapOn:
+          text: "^Allow$"
+          optional: true
+- extendedWaitUntil:
+    visible: "Status: Granted"
+    timeout: 20000
+
+- tapOn: "^Reminder$"
+- extendedWaitUntil:
+    visible: "Last sent: Reminder"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Last received: Reminder.*"
+    timeout: 20000
+
+- tapOn: "Cancel All"
+- extendedWaitUntil:
+    notVisible: "Last sent: Reminder"
+    timeout: 10000

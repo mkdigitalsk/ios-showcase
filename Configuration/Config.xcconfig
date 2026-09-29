@@ -1,0 +1,4 @@
+// Shared by Debug and Release.
+// TODO(template): the Apple Developer Team ID (developer.apple.com → Membership).
+// Empty builds for the simulator; a device or archive build needs the real value.
+TEAM_ID =

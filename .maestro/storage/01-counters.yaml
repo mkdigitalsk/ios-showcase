@@ -1,0 +1,53 @@
+appId: sk.mkdigital.templateios.debug
+name: Storage — the in-memory count ends with the process, the on-disk one survives it
+tags:
+  - needs-api
+---
+# 1. Start the app from a clear state, sign in and open Storage.
+# 2. Add two to In memory and one to On disk.
+# 3. Expect: 2 and 1.
+# 4. Stop the app, launch it again, open Storage.
+# 5. Expect: In memory is back to 0, On disk still 1.
+# 6. Tap Reset both.
+# 7. Expect: no 1 left.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Storage"
+- extendedWaitUntil:
+    visible: "In memory"
+    timeout: 20000
+
+- tapOn:
+    text: "Add one"
+    index: 0
+- tapOn:
+    text: "Add one"
+    index: 0
+- tapOn:
+    text: "Add one"
+    index: 1
+- assertVisible: "^2$"
+- assertVisible: "^1$"
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Storage"
+    timeout: 30000
+- tapOn: "Storage"
+- extendedWaitUntil:
+    visible: "In memory"
+    timeout: 20000
+- assertVisible: "^1$"
+- assertVisible: "^0$"
+- assertNotVisible: "^2$"
+
+- tapOn: "Reset both"
+- extendedWaitUntil:
+    notVisible: "^1$"
+    timeout: 10000

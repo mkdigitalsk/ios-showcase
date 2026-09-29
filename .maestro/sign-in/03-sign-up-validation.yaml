@@ -1,0 +1,40 @@
+appId: sk.mkdigital.templateios.debug
+name: Sign up — the form rejects a weak password and a mismatched confirmation
+---
+# No server — the form answers on its own.
+#
+# 1. Start the app from a clear state and open Create Account.
+# 2. Type a valid email, a long password with no digit or symbol, and a different confirmation.
+# 3. Tap Sign Up.
+# 4. Expect: the weak-password message and "Passwords do not match".
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+
+- extendedWaitUntil:
+    visible: "Welcome Back"
+    timeout: 20000
+- tapOn: "Sign Up"
+- extendedWaitUntil:
+    visible: "Create Account"
+    timeout: 10000
+
+- tapOn: "Enter your email"
+- inputText: "someone@example.com"
+# ⚠ iOS may cover a secure new-password field with its "Use Strong Password?" sheet, drawn outside the
+# app's tree, and the keys typed under it are lost. The eye swaps in a plain field, which gets no sheet.
+- tapOn:
+    text: "Show password"
+    index: 0
+- tapOn: "Enter your password"
+- inputText: "longbutweak"
+- tapOn: "Show password"
+- tapOn: "Confirm your password"
+- inputText: "somethingelse"
+
+- tapOn:
+    id: "signUp.submit"
+- assertVisible: "Password must contain uppercase, lowercase, number and special character"
+- assertVisible: "Passwords do not match"

@@ -1,0 +1,42 @@
+appId: sk.mkdigital.templateios.debug
+name: Calendar — two taps make a range and Clear Selection empties it
+tags:
+  - needs-api
+---
+# Two months ahead, so none of the days the demo disables after today is in the way, and days 15 and
+# 20 appear once in the grid.
+#
+# 1. Start from a clear state, sign in, open Calendar.
+# 2. Tap Next month twice.
+# 3. Tap 15. Expect: a start date.
+# 4. Tap 20. Expect: a from–to range.
+# 5. Tap Clear Selection. Expect: "No dates selected".
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Calendar"
+- extendedWaitUntil:
+    visible: "Select a date range by tapping two dates"
+    timeout: 20000
+- assertVisible: "No dates selected"
+
+- tapOn: "Next month"
+- tapOn: "Next month"
+- tapOn: "^15$"
+- extendedWaitUntil:
+    visible: "Start: .*"
+    timeout: 10000
+- tapOn: "^20$"
+# The range reads "From: …" and "To: …" on two lines, and matching is on the whole text — (?s) lets .* cross the newline.
+- extendedWaitUntil:
+    visible: "(?s)From: .*To: .*"
+    timeout: 10000
+
+- tapOn: "Clear Selection"
+- extendedWaitUntil:
+    visible: "No dates selected"
+    timeout: 10000

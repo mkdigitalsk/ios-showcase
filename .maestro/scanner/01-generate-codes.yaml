@@ -1,0 +1,49 @@
+appId: sk.mkdigital.templateios.debug
+name: Scanner — text becomes a QR code and a barcode, and scanning says it needs a camera
+tags:
+  - needs-api
+---
+# ⚠ Written for the simulator: it has no camera, so the scan pane shows its unsupported state.
+#
+# 1. Start from a clear state, sign in, open Scanner.
+# 2. Type a URL and tap Generate. Expect: Generated Code.
+# 3. Switch to Barcode and tap Generate. Expect: Generated Code.
+# 4. Switch to Scan. Expect: the camera message.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Scanner"
+- extendedWaitUntil:
+    visible: "Generate and scan QR codes.*"
+    timeout: 20000
+
+- tapOn: "Enter text or URL…"
+- inputText: "https://mkdigital.sk"
+- hideKeyboard
+# ⚠ "Generate" is both the mode segment and the button — the button is the one under the field.
+- tapOn:
+    text: "^Generate$"
+    below: "Text to encode"
+- extendedWaitUntil:
+    visible: "Generated Code"
+    timeout: 10000
+
+- tapOn: "Barcode"
+- extendedWaitUntil:
+    notVisible: "Generated Code"
+    timeout: 10000
+- tapOn:
+    text: "^Generate$"
+    below: "Text to encode"
+- extendedWaitUntil:
+    visible: "Generated Code"
+    timeout: 10000
+
+- tapOn: "^Scan$"
+- extendedWaitUntil:
+    visible: "Scanning needs a camera.*"
+    timeout: 10000

@@ -1,0 +1,15 @@
+# The suite. Maestro reads no subdirectory without this file, and `shared/` and `scripts/` stay out of it
+# on purpose — a shared flow is called through runFlow, a script through runScript.
+flows:
+  - "sign-in/*.yaml"
+  - "session/*.yaml"
+  - "home/*.yaml"
+  - "networking/*.yaml"
+  - "storage/*.yaml"
+  - "apis/*.yaml"
+  - "scanner/*.yaml"
+  - "database/*.yaml"
+  - "calendar/*.yaml"
+  - "notifications/*.yaml"
+  - "settings/*.yaml"
+  - "deep-links/*.yaml"

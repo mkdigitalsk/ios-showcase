@@ -1,0 +1,20 @@
+# Machine-local settings — copy to local.properties (gitignored) and fill in.
+
+# Simulator runs — scripts/run-device.sh, scripts/run-e2e.py
+run.device=false
+run.simulator=iPhone 17 Pro Max
+
+# End-to-end tests — scripts/run-e2e.py, scripts/run-e2e-suite.sh
+e2e.auto-run=false
+e2e.flows=.maestro
+e2e.exclude-tags=
+e2e.locale=
+e2e.location=
+e2e.appId=sk.mkdigital.templateios.debug
+e2e.account.email=
+e2e.account.password=
+
+# TestFlight — scripts/deploy-testflight.py
+ios.team.internal=
+ios.team.release=
+ios.build.number=0

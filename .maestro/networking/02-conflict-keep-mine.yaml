@@ -1,0 +1,82 @@
+appId: sk.mkdigital.templateios.debug
+name: Networking — a save the server refuses as stale keeps the draft on "Keep mine"
+tags:
+  - needs-api
+onFlowStart:
+  - evalScript: ${output.title = 'Maestro conflict ' + Date.now()}
+onFlowComplete:
+  - runScript:
+      file: ../scripts/delete-notes-on-server.js
+      env:
+        TITLE: ${output.title}
+        EMAIL: ${E2E_EMAIL}
+        PASSWORD: ${E2E_PASSWORD}
+---
+# The other editor is the API, driven from the flow: one simulator, one process, the assertion on real UI.
+#
+# 1. Start the app from a clear state, sign in, open Networking and add a note with a unique title.
+# 2. Tap its Edit note.
+# 3. Change the note on the server behind the app's back.
+# 4. Replace the content in the app and tap Save.
+# 5. Expect: "This note changed elsewhere".
+# 6. Tap Keep mine.
+# 7. Expect: the app's draft is listed, not the server's change.
+# 8. Delete the note.
+
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- runFlow: ../shared/sign-in.yaml
+
+- tapOn: "Networking"
+- extendedWaitUntil:
+    visible: "A remote server demonstration.*"
+    timeout: 20000
+- tapOn: "Enter note title…"
+- inputText: ${output.title}
+- tapOn: "Enter note content…"
+- inputText: "written in the app"
+# The keyboard's own Done — a multi-line field keeps the keyboard up otherwise.
+- waitForAnimationToEnd
+- tapOn: "Done"
+- tapOn: "Add note"
+- extendedWaitUntil:
+    visible: "written in the app"
+    timeout: 30000
+
+- tapOn:
+    text: "Edit note"
+    below: ${output.title}
+
+- runScript:
+    file: ../scripts/move-note-on-server.js
+    env:
+      TITLE: ${output.title}
+      EMAIL: ${E2E_EMAIL}
+      PASSWORD: ${E2E_PASSWORD}
+- assertTrue: ${output.movedStatus == 200}
+
+- tapOn:
+    id: "networking.edit.content"
+- eraseText
+- inputText: "kept from the app"
+- waitForAnimationToEnd
+- tapOn: "Done"
+- tapOn: "Save"
+- extendedWaitUntil:
+    visible: "This note changed elsewhere"
+    timeout: 30000
+- tapOn: "Keep mine"
+
+- extendedWaitUntil:
+    visible: "kept from the app"
+    timeout: 30000
+- assertNotVisible: "changed on the server"
+
+- tapOn:
+    text: "Delete note"
+    below: ${output.title}
+- extendedWaitUntil:
+    notVisible: ${output.title}
+    timeout: 30000
