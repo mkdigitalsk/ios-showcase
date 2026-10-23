@@ -24,6 +24,8 @@
 	<string>$(API_BASE_URL)</string>
 	<key>BuildType</key>
 	<string>$(BUILD_TYPE)</string>
+	<key>DataController</key>
+	<string>$(DATA_CONTROLLER)</string>
 	<key>PrivacyUrl</key>
 	<string>$(PRIVACY_URL)</string>
 	<key>UrlScheme</key>

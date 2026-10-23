@@ -73,9 +73,7 @@ struct SignUpScreenView: View {
                         .font(.dsBodyEmphasis)
                         .foregroundStyle(Color.dsAccent)
                 }
-                Link(String(localized: .signUpPrivacy), destination: AppConfiguration.privacyURL)
-                    .font(.dsCaption)
-                    .foregroundStyle(Color.dsTextSecondary)
+                PrivacyNotice()
             }
             .screenPadding()
         }
@@ -93,6 +91,23 @@ struct SignUpScreenView: View {
             await viewModel.submit { email, password in
                 try await sessionModel.signUp(email: email, password: password)
             }
+        }
+    }
+}
+
+/// The privacy notice's first layer, above the link to the full notice —
+/// [WP 260 rev. 01 — Usmernenia k transparentnosti podľa nariadenia 2016/679, odseky 35 a 36](https://dataprotection.gov.sk/files/metod-edpb/10_usmernenia_k_transparentnosti.pdf#page=19),
+/// [GDPR čl. 13 ods. 1](https://eur-lex.europa.eu/legal-content/SK/TXT/HTML/?uri=CELEX:32016R0679#013.001).
+private struct PrivacyNotice: View {
+    var body: some View {
+        VStack(spacing: Spacing.s) {
+            Text(.signUpPrivacySummary(AppConfiguration.dataController))
+                .font(.dsCaption)
+                .foregroundStyle(Color.dsTextSecondary)
+                .multilineTextAlignment(.center)
+            Link(String(localized: .signUpPrivacy), destination: AppConfiguration.privacyURL)
+                .font(.dsCaption)
+                .foregroundStyle(Color.dsAccent)
         }
     }
 }

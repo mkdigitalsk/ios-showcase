@@ -6,5 +6,5 @@ APP_DISPLAY_NAME = iOS Template Debug
 // `//` starts a comment in an xcconfig, so the scheme separator is split by an empty variable.
 API_BASE_URL = https:/$()/api.showcase.mkdigital.sk/v1
 URL_SCHEME = templateios
-// TODO(template): the product's privacy policy — the sign-up screen links it.
-PRIVACY_URL = https:/$()/example.com/privacy
+PRIVACY_URL = https:/$()/showcase.mkdigital.sk/privacy
+DATA_CONTROLLER = MK Digital s. r. o.

@@ -3,6 +3,7 @@ import Foundation
 enum AppConfiguration {
     static let apiBaseURL = requiredURL("ApiBaseUrl")
     static let privacyURL = requiredURL("PrivacyUrl")
+    static let dataController = requiredValue("DataController")
     static let urlScheme = requiredValue("UrlScheme")
     static let buildType = requiredValue("BuildType")
     static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"

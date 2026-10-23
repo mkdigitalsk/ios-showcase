@@ -3486,6 +3486,23 @@
         }
       }
     },
+    "signUp.privacy.summary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is responsible for your data. We store your email and a form of your password that no one can read. We need them to create and run your account, as part of our contract with you. If nobody opens your account for 30 days, we delete it and the notes in it. The link below opens the full notice, including your right to see, correct or delete your data."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ zodpovedá za vaše údaje. Uchovávame váš e-mail a podobu vášho hesla, ktorú nikto nedokáže prečítať. Potrebujeme ich na vytvorenie a vedenie vášho účtu v rámci našej zmluvy s vami. Ak váš účet nikto neotvorí 30 dní, zmažeme ho aj s poznámkami v ňom. Pod odkazom nižšie nájdete celé oznámenie vrátane vášho práva údaje vidieť, opraviť či vymazať."
+          }
+        }
+      }
+    },
     "signUp.screen": {
       "extractionState": "manual",
       "localizations": {
