@@ -7,4 +7,5 @@ APP_DISPLAY_NAME = iOS Template
 API_BASE_URL = https:/$()/api.showcase.mkdigital.sk/v1
 URL_SCHEME = templateios
 PRIVACY_URL = https:/$()/showcase.mkdigital.sk/privacy
+TERMS_URL = https:/$()/showcase.mkdigital.sk/terms
 DATA_CONTROLLER = MK Digital s. r. o.

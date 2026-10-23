@@ -3537,6 +3537,40 @@
         }
       }
     },
+    "signUp.terms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "By creating an account you enter into a contract with us to use the app on the terms of use."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vytvorením účtu uzatvárate s nami zmluvu o používaní aplikácie podľa podmienok používania."
+          }
+        }
+      }
+    },
+    "signUp.terms.link": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of use"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podmienky používania"
+          }
+        }
+      }
+    },
     "signUp.title": {
       "extractionState": "manual",
       "localizations": {

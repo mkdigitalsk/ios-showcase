@@ -28,6 +28,8 @@
 	<string>$(DATA_CONTROLLER)</string>
 	<key>PrivacyUrl</key>
 	<string>$(PRIVACY_URL)</string>
+	<key>TermsUrl</key>
+	<string>$(TERMS_URL)</string>
 	<key>UrlScheme</key>
 	<string>$(URL_SCHEME)</string>
 	<key>CFBundleURLTypes</key>

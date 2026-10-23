@@ -73,6 +73,7 @@ struct SignUpScreenView: View {
                         .font(.dsBodyEmphasis)
                         .foregroundStyle(Color.dsAccent)
                 }
+                TermsNotice()
                 PrivacyNotice()
             }
             .screenPadding()
@@ -91,6 +92,21 @@ struct SignUpScreenView: View {
             await viewModel.submit { email, password in
                 try await sessionModel.signUp(email: email, password: password)
             }
+        }
+    }
+}
+
+/// The terms of use line, with the link that opens them.
+private struct TermsNotice: View {
+    var body: some View {
+        VStack(spacing: Spacing.s) {
+            Text(.signUpTerms)
+                .font(.dsCaption)
+                .foregroundStyle(Color.dsTextSecondary)
+                .multilineTextAlignment(.center)
+            Link(String(localized: .signUpTermsLink), destination: AppConfiguration.termsURL)
+                .font(.dsCaption)
+                .foregroundStyle(Color.dsAccent)
         }
     }
 }
