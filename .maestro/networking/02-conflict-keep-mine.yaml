@@ -12,16 +12,15 @@ onFlowComplete:
         EMAIL: ${E2E_EMAIL}
         PASSWORD: ${E2E_PASSWORD}
 ---
-# The other editor is the API, driven from the flow: one simulator, one process, the assertion on real UI.
+# BR: Networking · A save over a newer server copy asks first, and `Keep mine` keeps the app's draft
+# Given a note open for editing in the app
+# And the note changed on the server since
+# When the app's edit is saved
+# Then `This note changed elsewhere` shows
 #
-# 1. Start the app from a clear state, sign in, open Networking and add a note with a unique title.
-# 2. Tap its Edit note.
-# 3. Change the note on the server behind the app's back.
-# 4. Replace the content in the app and tap Save.
-# 5. Expect: "This note changed elsewhere".
-# 6. Tap Keep mine.
-# 7. Expect: the app's draft is listed, not the server's change.
-# 8. Delete the note.
+# Given `This note changed elsewhere` on screen
+# When the user keeps their draft
+# Then the app's draft is listed, not the server's change
 
 - launchApp:
     clearState: true

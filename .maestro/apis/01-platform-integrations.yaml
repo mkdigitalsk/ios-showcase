@@ -3,14 +3,26 @@ name: APIs — clipboard, share sheet, missing apps and location each answer
 tags:
   - needs-api
 ---
-# ⚠ Written for the simulator: it has no Phone and no Mail, so both report no app. On a device they open.
+# BR: APIs · The clipboard, the share sheet, a missing app and the location each answer
+# Given the APIs screen
+# When the user copies the text
+# Then `Copied to clipboard` shows
 #
-# 1. Put the simulator at a known position, start from a clear state, sign in, open APIs.
-# 2. Tap Copy Text. Expect: "Copied to clipboard".
-# 3. Tap Share Text. Expect: the share sheet headed by the sentence, with its Copy action. Dismiss it.
-# 4. Tap Open Dialer. Expect: "No app on this device can open this".
-# 5. Tap Get Location. Expect: the position set in step 1.
-# 6. Tap Start Tracking. Expect: Stop Tracking and a position. Tap Stop Tracking.
+# Given the APIs screen
+# When the user shares the text
+# Then the share sheet opens, headed by the shared sentence
+#
+# Given a device with no Phone app
+# When the user opens the dialer
+# Then `No app on this device can open this` shows
+#
+# Given the device at a known position
+# When the user asks for the location
+# Then that position shows
+#
+# Given the device at a known position
+# When the user starts tracking, then stops it
+# Then the button reads `Stop Tracking` while it runs and `Start Tracking` after
 
 - setLocation:
     latitude: 48.148598
@@ -51,6 +63,7 @@ tags:
     notVisible: "^Copy$"
     timeout: 10000
 
+# ⚠ Written for the simulator, which has no Phone app — on a device the dialer opens.
 - tapOn: "Open Dialer"
 - extendedWaitUntil:
     visible: "No app on this device can open this"

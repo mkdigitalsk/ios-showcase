@@ -3,11 +3,25 @@ name: Settings — the account shows, the theme changes, the photo source opens,
 tags:
   - needs-api
 ---
-# 1. Start from a clear state, sign in, open the Settings tab.
-# 2. Expect: the account's email from the server.
-# 3. Pick Dark as the theme. Expect: Dark shown.
-# 4. Tap Profile Photo. Expect: the image source choice. Dismiss it.
-# 5. Expect: the demo account's delete notice.
+# BR: Settings · The signed-in account shows
+# Given a signed-in user
+# When they open Settings
+# Then the account's e-mail from the server shows
+#
+# BR: Settings · The theme changes to the user's pick
+# Given the theme `System`
+# When the user picks `Dark`
+# Then the theme reads `Dark`
+#
+# BR: Settings · A profile photo comes from a source the user chooses
+# Given Settings
+# When the user changes the profile photo
+# Then `Select Image Source` offers `Photo Library`
+#
+# BR: Settings · The demo account cannot be deleted
+# Given the demo account
+# When Settings shows `Delete account`
+# Then `This is a demo account, so it cannot be deleted.` shows with it
 
 - launchApp:
     clearState: true

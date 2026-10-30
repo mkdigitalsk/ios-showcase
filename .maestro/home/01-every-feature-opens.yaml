@@ -3,8 +3,11 @@ name: Home — every feature tile opens its screen and comes back
 tags:
   - needs-api
 ---
-# 1. Start the app from a clear state and sign in.
-# 2. For each of the eight tiles: tap it, expect what only that screen draws, tap Back.
+# BR: Home · Every feature tile opens its screen and comes back
+# Given a signed-in user on Home
+# When they open each of the eight feature tiles in turn
+# Then each tile's screen shows
+# And going back returns to Home
 
 - launchApp:
     clearState: true

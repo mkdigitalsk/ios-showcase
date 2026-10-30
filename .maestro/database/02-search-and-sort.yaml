@@ -3,10 +3,14 @@ name: Database — search narrows the list and sort reorders it
 tags:
   - needs-api
 ---
-# 1. Start from a clear state, sign in, open Database.
-# 2. Add "Alpha apples" and "Beta bread".
-# 3. Search for "apples". Expect: Alpha listed, Beta not.
-# 4. Close the search, sort by Title (Z-A). Expect: Alpha below Beta.
+# BR: Database · Search narrows the list, and sort reorders it
+# Given the notes `Alpha apples` and `Beta bread`
+# When the user searches for `apples`
+# Then `Alpha apples` is listed and `Beta bread` is not
+#
+# Given the same two notes, the search closed
+# When the user sorts by `Title (Z-A)`
+# Then `Beta bread` is listed above `Alpha apples`
 
 - launchApp:
     clearState: true

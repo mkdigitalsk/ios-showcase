@@ -3,13 +3,15 @@ name: Session — a relaunch keeps the session, and signing out ends it for good
 tags:
   - needs-api
 ---
-# 1. Start the app from a clear state and sign in.
-# 2. Stop the app and launch it again without clearing state.
-# 3. Expect: Home, with no sign-in in between — the keychain token restored the session.
-# 4. Open Settings and tap Sign Out.
-# 5. Expect: Welcome Back.
-# 6. Stop the app and launch it again.
-# 7. Expect: Welcome Back — the token went with the session.
+# BR: Sign in · A session survives a relaunch, and signing out ends it for good
+# Given a signed-in user
+# When the app is relaunched
+# Then Home shows, with no sign-in in between
+#
+# Given a signed-in user
+# When they sign out in Settings
+# Then `Welcome Back` shows
+# And it still shows after a relaunch
 
 - launchApp:
     clearState: true

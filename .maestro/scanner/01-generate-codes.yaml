@@ -3,12 +3,19 @@ name: Scanner — text becomes a QR code and a barcode, and scanning says it nee
 tags:
   - needs-api
 ---
-# ⚠ Written for the simulator: it has no camera, so the scan pane shows its unsupported state.
+# BR: Scanner · Text becomes a QR code or a barcode
+# Given a URL typed to encode
+# When a QR code is generated
+# Then `Generated Code` shows
 #
-# 1. Start from a clear state, sign in, open Scanner.
-# 2. Type a URL and tap Generate. Expect: Generated Code.
-# 3. Switch to Barcode and tap Generate. Expect: Generated Code.
-# 4. Switch to Scan. Expect: the camera message.
+# Given the same URL
+# When a barcode is generated
+# Then `Generated Code` shows again
+#
+# BR: Scanner · Scanning needs a camera
+# Given a device without a camera
+# When the user switches to scanning
+# Then `Scanning needs a camera — run on a device.` shows
 
 - launchApp:
     clearState: true
@@ -43,6 +50,7 @@ tags:
     visible: "Generated Code"
     timeout: 10000
 
+# ⚠ Written for the simulator, which has no camera — the scan pane shows its unsupported state.
 - tapOn: "^Scan$"
 - extendedWaitUntil:
     visible: "Scanning needs a camera.*"

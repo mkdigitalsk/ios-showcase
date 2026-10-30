@@ -1,12 +1,14 @@
 appId: sk.mkdigital.templateios.debug
 name: Sign up — the form rejects a weak password and a mismatched confirmation
 ---
-# No server — the form answers on its own.
+# BR: Sign up · The form refuses a weak password and a confirmation that differs
+# Given a fresh install, on the sign-up form
+# When it is sent with a password of lowercase letters only
+# Then `Password must contain uppercase, lowercase, number and special character` shows
 #
-# 1. Start the app from a clear state and open Create Account.
-# 2. Type a valid email, a long password with no digit or symbol, and a different confirmation.
-# 3. Tap Sign Up.
-# 4. Expect: the weak-password message and "Passwords do not match".
+# Given the sign-up form
+# When it is sent with a confirmation that differs from the password
+# Then `Passwords do not match` shows
 
 - launchApp:
     clearState: true

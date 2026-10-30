@@ -3,13 +3,15 @@ name: Storage — the in-memory count ends with the process, the on-disk one sur
 tags:
   - needs-api
 ---
-# 1. Start the app from a clear state, sign in and open Storage.
-# 2. Add two to In memory and one to On disk.
-# 3. Expect: 2 and 1.
-# 4. Stop the app, launch it again, open Storage.
-# 5. Expect: In memory is back to 0, On disk still 1.
-# 6. Tap Reset both.
-# 7. Expect: no 1 left.
+# BR: Storage · The in-memory count ends with the process, the on-disk one survives it
+# Given `In memory` at 2 and `On disk` at 1
+# When the app is relaunched
+# Then `In memory` is back to 0
+# And `On disk` is still 1
+#
+# Given counts on both
+# When the user resets both
+# Then both are back to 0
 
 - launchApp:
     clearState: true

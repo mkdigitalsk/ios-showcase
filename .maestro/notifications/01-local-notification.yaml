@@ -3,13 +3,20 @@ name: Notifications — a reminder is sent, arrives in front, and Cancel All cle
 tags:
   - needs-api
 ---
-# The reminder fires a second after the tap, while the app is in front, so the delivery path the app
-# delegate owns is what puts "Last received" on screen.
+# BR: Notifications · The permission is asked for on request
+# Given notifications not yet allowed
+# When the user requests permission and allows it
+# Then `Status: Granted` shows
 #
-# 1. Start from a clear state, sign in, open Notifications.
-# 2. Where the permission is not determined, tap Request Permission and Allow. Expect: "Status: Granted".
-# 3. Tap Reminder. Expect: "Last sent: Reminder", then "Last received" with the reminder's text.
-# 4. Tap Cancel All. Expect: no "Last sent".
+# BR: Notifications · A reminder arrives while the app is in front, and `Cancel All` clears it
+# Given notifications allowed
+# When the user sends a reminder
+# Then `Last sent: Reminder` shows
+# And `Last received: <the reminder>` follows once it arrives
+#
+# Given a sent reminder
+# When the user cancels all
+# Then `Last sent: Reminder` is gone
 
 - launchApp:
     clearState: true
@@ -43,6 +50,8 @@ tags:
 - extendedWaitUntil:
     visible: "Last sent: Reminder"
     timeout: 10000
+# ⚠ The reminder fires a second after the tap, while the app is in front, so the delivery path the app
+# delegate owns is what puts "Last received" on screen.
 - extendedWaitUntil:
     visible: "Last received: Reminder.*"
     timeout: 20000

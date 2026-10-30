@@ -3,10 +3,18 @@ name: Deep links — a link opens its screen, and the app ones wait for a sessio
 tags:
   - needs-api
 ---
-# 1. Start from a clear state, signed out. Open templateios://sign-up. Expect: Create Account.
-# 2. Go back to Welcome Back and sign in.
-# 3. Open templateios://settings. Expect: Settings.
-# 4. Open templateios://database. Expect: Database.
+# BR: Deep links · A link opens its screen — sign up while signed out, the app's screens once signed in
+# Given a fresh install, signed out
+# When `templateios://sign-up` is opened
+# Then `Create Account` shows
+#
+# Given a signed-in user
+# When `templateios://settings` is opened
+# Then Settings shows
+#
+# Given a signed-in user
+# When `templateios://database` is opened
+# Then Database shows
 
 - launchApp:
     clearState: true

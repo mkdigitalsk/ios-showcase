@@ -12,15 +12,19 @@ onFlowComplete:
         EMAIL: ${E2E_EMAIL}
         PASSWORD: ${E2E_PASSWORD}
 ---
-# The title is unique per run, so notes a failed run left behind never match.
+# BR: Networking · A note is created, edited and deleted on the server
+# Given a signed-in user on Networking
+# When they add a note
+# Then the note is listed
 #
-# 1. Start the app from a clear state, sign in and open Networking.
-# 2. Type a unique title and a content, tap Add note.
-# 3. Expect: the note is listed.
-# 4. Tap its Edit note, replace the content, tap Save.
-# 5. Expect: the new content is listed and the edit is closed.
-# 6. Tap its Delete note.
-# 7. Expect: the note is gone.
+# Given a listed note
+# When its content is edited and saved
+# Then the new content is listed
+# And the editor closes
+#
+# Given a listed note
+# When it is deleted
+# Then it leaves the list
 
 - launchApp:
     clearState: true

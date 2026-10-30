@@ -1,14 +1,14 @@
 appId: sk.mkdigital.templateios.debug
 name: Sign in — the form rejects what it can judge itself
 ---
-# No server, no account, no network — the form answers on its own.
+# BR: Sign in · The form refuses what it can judge without the server
+# Given a fresh install, signed out
+# When the form is sent empty
+# Then `Email is required` and `Password is required` show
 #
-# 1. Start the app from a clear state, on Welcome Back.
-# 2. Tap Sign In with both fields empty.
-# 3. Expect: "Email is required" and "Password is required".
-# 4. Type "not-an-email" into Email and "short" into Password, then dismiss the keyboard.
-# 5. Tap Sign In.
-# 6. Expect: "Invalid email format" and "Password must be at least 8 characters".
+# Given the sign-in form
+# When it is sent with a malformed e-mail and a password under 8 characters
+# Then `Invalid email format` and `Password must be at least 8 characters` show
 
 - launchApp:
     clearState: true

@@ -3,12 +3,10 @@ name: Sign up — an email that already has an account lands on the email field
 tags:
   - needs-api
 ---
-# Uses the test account's own email, so no account is ever created.
-#
-# 1. Start the app from a clear state and open Create Account.
-# 2. Type the test account's email with a strong password, twice.
-# 3. Tap Sign Up.
-# 4. Expect: "This email already has an account".
+# BR: Sign up · An e-mail that already has an account is refused
+# Given a fresh install, on the sign-up form
+# When it is sent with an existing account's e-mail and a strong password
+# Then `This email already has an account` shows
 
 - launchApp:
     clearState: true
