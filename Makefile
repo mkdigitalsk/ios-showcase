@@ -1,11 +1,11 @@
-.PHONY: hooks project format format-check format-version build build-release test-unit record-snapshots test-snapshots test-design-system record-design-system-snapshots test-api test
+.PHONY: hooks project format format-check format-version print-swiftformat-version build build-release test-unit record-snapshots test-snapshots test-design-system record-design-system-snapshots test-api test
 
 SCHEME ?= TemplateIOS
 SIMULATOR ?= iPhone 17 Pro Max
 DESTINATION ?= platform=iOS Simulator,id=$(shell ./scripts/resolve-simulator.sh "$(SIMULATOR)")
 CONFIGURATION ?= Debug
 DERIVED_DATA ?= .build/derivedData
-SWIFTFORMAT_VERSION ?= 0.62.1
+SWIFTFORMAT_VERSION ?= 0.64.6
 SNAPSHOT_PATH ?=
 SNAPSHOT_FILTER = $(if $(SNAPSHOT_PATH),/$(SNAPSHOT_PATH),)
 DESIGN_SYSTEM_FILTER = $(if $(SNAPSHOT_PATH),-only-testing:DesignSystemSnapshotTests/$(SNAPSHOT_PATH),)
@@ -30,6 +30,9 @@ format-version:
 		echo "SwiftFormat $(SWIFTFORMAT_VERSION) is required, found $$installed — brew install swiftformat, or pass SWIFTFORMAT_VERSION=$$installed to use that one deliberately" >&2; \
 		exit 1; \
 	}
+
+print-swiftformat-version:
+	@echo $(SWIFTFORMAT_VERSION)
 
 format: format-version
 	swiftformat .
