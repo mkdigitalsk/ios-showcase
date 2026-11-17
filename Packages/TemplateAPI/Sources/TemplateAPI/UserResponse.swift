@@ -6,20 +6,21 @@ public struct UserResponse: Decodable, Equatable, Sendable {
     public let email: String
     public let createdAt: Date
     public let themeMode: ThemeMode?
-    public let locale: String
+    /// Falls back, so a newer server never fails the read.
+    public let language: Language
     public let demo: Bool
 
-    public init(id: Int, email: String, createdAt: Date, themeMode: ThemeMode?, locale: String, demo: Bool) {
+    public init(id: Int, email: String, createdAt: Date, themeMode: ThemeMode?, language: Language, demo: Bool) {
         self.id = id
         self.email = email
         self.createdAt = createdAt
         self.themeMode = themeMode
-        self.locale = locale
+        self.language = language
         self.demo = demo
     }
 
     private enum CodingKeys: String, CodingKey {
-        case id, email, createdAt, themeMode, locale, demo
+        case id, email, createdAt, themeMode, language, demo
     }
 
     public init(from decoder: any Decoder) throws {
@@ -28,7 +29,7 @@ public struct UserResponse: Decodable, Equatable, Sendable {
         email = try container.decode(String.self, forKey: .email)
         createdAt = try container.decode(Date.self, forKey: .createdAt)
         themeMode = try container.decode(LossyEnum<ThemeMode>.self, forKey: .themeMode).wrappedValue
-        locale = try container.decode(String.self, forKey: .locale)
+        language = try container.decode(LossyEnum<Language>.self, forKey: .language).wrappedValue ?? .fallback
         demo = try container.decodeIfPresent(Bool.self, forKey: .demo) ?? false
     }
 }

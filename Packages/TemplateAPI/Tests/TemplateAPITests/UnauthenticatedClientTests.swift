@@ -4,7 +4,7 @@ import Testing
 
 struct UnauthenticatedClientTests {
     private static let authBody = """
-    {"token":"t0k3n","user":{"id":2,"email":"a@b.c","themeMode":"light","locale":"en-GB","demo":true}}
+    {"token":"t0k3n","user":{"id":2,"email":"a@b.c","themeMode":"light","language":"SK","demo":true}}
     """
 
     @Test
@@ -15,7 +15,7 @@ struct UnauthenticatedClientTests {
         let response = try await client.signIn(email: "a@b.c", password: "secret")
 
         #expect(response.token == "t0k3n")
-        #expect(response.user == AuthUser(id: 2, email: "a@b.c", themeMode: .light, locale: "en-GB", demo: true))
+        #expect(response.user == AuthUser(id: 2, email: "a@b.c", themeMode: .light, language: .sk, demo: true))
         let sent = await transport.sent[0]
         #expect(sent.request.method == .post)
         #expect(sent.request.path == "/v1/auth/sign-in")
@@ -47,13 +47,33 @@ struct UnauthenticatedClientTests {
 
     @Test
     func `an unknown theme mode decodes as nil, not as a failure`() async throws {
-        let body = #"{"token":"t","user":{"id":1,"email":"a@b.c","themeMode":"sepia","locale":"en-GB"}}"#
+        let body = #"{"token":"t","user":{"id":1,"email":"a@b.c","themeMode":"sepia","language":"EN"}}"#
         let client = UnauthenticatedClient(baseURL: baseURL, transport: StubTransport(.response(status: 200, body: body)))
 
         let response = try await client.signIn(email: "a@b.c", password: "secret")
 
         #expect(response.user.themeMode == nil)
         #expect(response.user.demo == false)
+    }
+
+    @Test
+    func `a language this build does not know opens in English, not as a failure`() async throws {
+        let body = #"{"token":"t","user":{"id":1,"email":"a@b.c","themeMode":"light","language":"FR"}}"#
+        let client = UnauthenticatedClient(baseURL: baseURL, transport: StubTransport(.response(status: 200, body: body)))
+
+        let response = try await client.signIn(email: "a@b.c", password: "secret")
+
+        #expect(response.user.language == .en)
+    }
+
+    @Test
+    func `an answer that names no language opens in English, not as a failure`() async throws {
+        let body = #"{"token":"t","user":{"id":1,"email":"a@b.c","themeMode":"light"}}"#
+        let client = UnauthenticatedClient(baseURL: baseURL, transport: StubTransport(.response(status: 200, body: body)))
+
+        let response = try await client.signIn(email: "a@b.c", password: "secret")
+
+        #expect(response.user.language == .en)
     }
 
     @Test

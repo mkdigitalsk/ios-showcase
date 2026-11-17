@@ -15,19 +15,20 @@ public struct AuthUser: Decodable, Equatable, Sendable {
     public let email: String
     /// `nil` when the server sends a mode this build does not know.
     public let themeMode: ThemeMode?
-    public let locale: String
+    /// Falls back, so a newer server never fails the sign-in.
+    public let language: Language
     public let demo: Bool
 
-    public init(id: Int, email: String, themeMode: ThemeMode?, locale: String, demo: Bool) {
+    public init(id: Int, email: String, themeMode: ThemeMode?, language: Language, demo: Bool) {
         self.id = id
         self.email = email
         self.themeMode = themeMode
-        self.locale = locale
+        self.language = language
         self.demo = demo
     }
 
     private enum CodingKeys: String, CodingKey {
-        case id, email, themeMode, locale, demo
+        case id, email, themeMode, language, demo
     }
 
     public init(from decoder: any Decoder) throws {
@@ -35,7 +36,7 @@ public struct AuthUser: Decodable, Equatable, Sendable {
         id = try container.decode(Int.self, forKey: .id)
         email = try container.decode(String.self, forKey: .email)
         themeMode = try container.decode(LossyEnum<ThemeMode>.self, forKey: .themeMode).wrappedValue
-        locale = try container.decode(String.self, forKey: .locale)
+        language = try container.decode(LossyEnum<Language>.self, forKey: .language).wrappedValue ?? .fallback
         demo = try container.decodeIfPresent(Bool.self, forKey: .demo) ?? false
     }
 }

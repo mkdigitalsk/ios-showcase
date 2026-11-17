@@ -63,13 +63,23 @@ struct AuthenticatedClientTests {
 
     @Test
     func `me decodes the demo flag and the created date`() async throws {
-        let body = #"{"id":2,"email":"a@b.c","createdAt":1786414481469,"themeMode":"light","locale":"en-GB","demo":true}"#
+        let body = #"{"id":2,"email":"a@b.c","createdAt":1786414481469,"themeMode":"light","language":"EN","demo":true}"#
         let client = AuthenticatedClient(baseURL: baseURL, token: "t", transport: StubTransport(.response(status: 200, body: body)))
 
         let user = try await client.me()
 
         #expect(user.demo)
         #expect(user.createdAt == Date(timeIntervalSince1970: 1_786_414_481.469))
+    }
+
+    @Test
+    func `me reads a language this build does not know as English, not as a failure`() async throws {
+        let body = #"{"id":2,"email":"a@b.c","createdAt":1786414481469,"themeMode":"light","language":"FR"}"#
+        let client = AuthenticatedClient(baseURL: baseURL, token: "t", transport: StubTransport(.response(status: 200, body: body)))
+
+        let user = try await client.me()
+
+        #expect(user.language == .en)
     }
 }
 
